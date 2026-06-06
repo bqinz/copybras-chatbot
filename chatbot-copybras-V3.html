@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copybras — Asistente IA | BQinzAgencIA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#0d0d0d;--ink2:#3a3a3a;--ink3:#888;--paper:#f5f2ec;--paper2:#ede9e0;--paper3:#ddd9d0;--accent:#c8451a;--accent2:#e85d30}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);min-height:100vh;display:flex;flex-direction:column}
+header{background:var(--ink);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:white}.brand span{color:var(--accent2)}
+.status{display:flex;align-items:center;gap:6px;font-size:12px;color:#888}
+.dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.wrap{flex:1;display:flex;flex-direction:column;max-width:700px;width:100%;margin:0 auto;padding:1.5rem 1rem 0}
+.title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.sub{font-size:13px;color:var(--ink3);margin-bottom:1.2rem}
+.qr{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
+.qr button{font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 13px;border-radius:99px;border:1px solid var(--paper3);background:white;color:var(--ink2);cursor:pointer;transition:all .15s}
+.qr button:hover{background:var(--ink);color:white;border-color:var(--ink)}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-bottom:1rem;min-height:300px;max-height:calc(100vh - 280px)}
+.msgs::-webkit-scrollbar{width:3px}.msgs::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:3px}
+.msg{display:flex;gap:10px;animation:up .2s ease-out}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.av.b{background:var(--ink);color:white}.av.u{background:var(--accent);color:white}
+.bub{max-width:78%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.55}
+.msg.bot .bub{background:white;color:var(--ink);border:1px solid var(--paper3);border-bottom-left-radius:4px}
+.msg.user .bub{background:var(--ink);color:white;border-bottom-right-radius:4px}
+.dots{display:flex;gap:4px;align-items:center;padding:12px 14px}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--ink3);animation:b 1.2s infinite;display:block}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes b{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.inp-area{background:white;border-top:1px solid var(--paper3);padding:12px 1rem;display:flex;gap:10px;align-items:center;position:sticky;bottom:0}
+.inp{flex:1;font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 16px;border:1px solid var(--paper3);border-radius:99px;background:var(--paper);color:var(--ink);outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--accent);background:white}
+.send{width:42px;height:42px;border-radius:50%;background:var(--ink);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .15s;flex-shrink:0;color:white}
+.send:hover{background:var(--accent)}.send:disabled{background:var(--paper3);cursor:not-allowed}
+footer{text-align:center;font-size:11px;color:var(--ink3);padding:10px;background:white;border-top:1px solid var(--paper2)}
+footer a{color:var(--accent);text-decoration:none}
+.lead-form{background:white;border:1px solid var(--paper3);border-radius:14px;padding:1.2rem;margin-top:4px}
+.lead-form h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:10px}
+.lead-inp{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 13px;border:1px solid var(--paper3);border-radius:8px;margin-bottom:8px;outline:none}
+.lead-inp:focus{border-color:var(--accent)}
+.lead-btn{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">BQinz<span>AgencIA</span></div>
+  <div class="status"><div class="dot"></div>Asistente Copybras activo</div>
+</header>
+<div class="wrap">
+  <div class="title">Hola, soy el asistente de Copybras 👋</div>
+  <div class="sub">Pregúntame sobre productos, precios, envíos o pedidos de empresa</div>
+  <div class="qr" id="qr">
+    <button onclick="sq('¿Tenéis papel A4 en stock?')">📄 Papel A4</button>
+    <button onclick="sq('¿Qué tóneres tenéis?')">🖨️ Tóneres</button>
+    <button onclick="sq('¿Hacéis envíos a toda España?')">🚚 Envíos</button>
+    <button onclick="sq('Necesito material para mi empresa')">🏢 Empresa</button>
+    <button onclick="sq('¿Cuál es vuestro teléfono?')">📞 Contacto</button>
+  </div>
+  <div class="msgs" id="msgs"></div>
+</div>
+<div class="inp-area">
+  <input class="inp" id="inp" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}">
+  <button class="send" id="send-btn" onclick="send()">➤</button>
+</div>
+<footer>Sistema IA por <a href="https://bqinzagencia.com" target="_blank">BQinzAgencIA</a> para Copybras</footer>
+<script>
+const SYSTEM=`Eres el asistente virtual de Copybras, papelería online española. Web: copybras.es.
+Tel: 91 406 11 21 / 679 429 001. Email: info@copybras.es. Madrid, Avda Marqués de Corbera 46.
+Envío GRATIS desde 65€. Entrega 24-48h Madrid, 48-72h resto España. Devoluciones 14 días.
+Productos: material oficina, tóneres HP/Canon/Epson/Brother, papel A4, escolar, mobiliario.
+Papel Navigator A4 80gr 500h: 4,55€. Papel MultiOffice A4: 3,35€.
+Responde en español, amigable, máximo 3-4 líneas, emojis ocasionales.`;
+let hist=[],msgCount=0,leadShown=false;
+const KEY=window.ANTHROPIC_KEY||'';
+window.addEventListener('load',()=>{
+  addMsg('¡Hola! Soy el asistente virtual de Copybras. ¿En qué puedo ayudarte hoy? 😊','bot');
+});
+async function send(){
+  const inp=document.getElementById('inp');
+  const text=inp.value.trim();
+  if(!text||document.getElementById('send-btn').disabled)return;
+  inp.value='';
+  addMsg(text,'user');
+  hist.push({role:'user',content:text});
+  msgCount++;
+  document.getElementById('qr').style.display='none';
+  const typing=addTyping();
+  document.getElementById('send-btn').disabled=true;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,system:SYSTEM,messages:hist})
+    });
+    const data=await res.json();
+    typing.remove();
+    if(data.content&&data.content[0]){
+      const reply=data.content[0].text;
+      addMsg(reply,'bot');
+      hist.push({role:'assistant',content:reply});
+      if(msgCount>=3&&!leadShown){leadShown=true;setTimeout(showLead,800);}
+    }else{
+      addMsg('Lo siento, hubo un problema. Llámanos al 91 406 11 21 📞','bot');
+    }
+  }catch(e){
+    typing.remove();
+    addMsg('Error de conexión. Contacta en info@copybras.es 📞','bot');
+  }
+  document.getElementById('send-btn').disabled=false;
+  document.getElementById('inp').focus();
+}
+function sq(t){document.getElementById('inp').value=t;send();}
+function addMsg(text,who){
+  const m=document.getElementById('msgs');
+  const d=document.createElement('div');
+  d.className=`msg ${who}`;
+  d.innerHTML=who==='bot'
+    ?`<div class="av b">IA</div><div class="bub">${text}</div>`
+    :`<div class="av u">TÚ</div><div class="bub">${text}</div>`;
+  m.appendChild(d);m.scrollTop=m.scrollHeight;return d;
+}
+function addTyping(){
+  const m=document.getElementById('msgs');
+  const d=document.createElement('div');
+  d.className='msg bot';
+  d.innerHTML=`<div class="av b">IA</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  m.appendChild(d);m.scrollTop=m.scrollHeight;return d;
+}
+function showLead(){
+  const m=document.getElementById('msgs');
+  const f=document.createElement('div');
+  f.className='lead-form';
+  f.innerHTML=`<h3>¿Quieres que te contactemos? 📋</h3>
+    <input class="lead-inp" id="ln" placeholder="Tu nombre">
+    <input class="lead-inp" id="le" type="email" placeholder="Tu email">
+    <input class="lead-inp" id="lp" placeholder="Teléfono (opcional)">
+    <button class="lead-btn" onclick="submitLead()">Enviar mis datos →</button>`;
+  m.appendChild(f);m.scrollTop=m.scrollHeight;
+}
+function submitLead(){
+  const n=document.getElementById('ln').value.trim();
+  const e=document.getElementById('le').value.trim();
+  if(!n||!e){alert('Por favor rellena nombre y email');return;}
+  document.querySelector('.lead-form').remove();
+  addMsg(`¡Perfecto ${n}! El equipo de Copybras te contactará pronto en ${e}. ¡Gracias! 🙌`,'bot');
+}
+</script>
+</body>
+</html>
