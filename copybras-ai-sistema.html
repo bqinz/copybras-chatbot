@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copybras AI — Sistema Inteligente | BQinzAgencIA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d0d0d;
+  --ink2: #2a2a2a;
+  --ink3: #5a5a5a;
+  --paper: #f5f2ec;
+  --paper2: #ede9e0;
+  --paper3: #e4dfd3;
+  --accent: #c8451a;
+  --accent2: #e85d30;
+  --accent-pale: #f9ebe5;
+  --green: #1a6b3c;
+  --green-pale: #e6f4ed;
+  --blue: #1a3d6b;
+  --blue-pale: #e6edf4;
+  --gold: #b8860b;
+  --gold-pale: #fdf6e3;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 2px 12px rgba(13,13,13,0.08);
+  --shadow-lg: 0 8px 40px rgba(13,13,13,0.12);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ─── TOP NAV ─── */
+.topnav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  background: var(--ink);
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid #222;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--paper);
+  letter-spacing: -0.02em;
+}
+.brand span { color: var(--accent2); }
+.client-badge {
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--accent);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+
+/* ─── TABS ─── */
+.tabs {
+  display: flex;
+  background: var(--ink2);
+  padding: 0 2rem;
+  gap: 2px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink3);
+  background: transparent;
+  border: none;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  display: flex; align-items: center; gap: 7px;
+}
+.tab-btn:hover { color: var(--paper2); }
+.tab-btn.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+.tab-icon { font-size: 16px; }
+
+/* ─── MAIN CONTENT ─── */
+.panel { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.panel.active { display: block; }
+
+/* ─── CARDS ─── */
+.card {
+  background: white;
+  border: 1px solid var(--paper3);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ─── GRID ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .topnav { padding: 0 1rem; }
+  .panel { padding: 1rem; }
+}
+
+/* ─── STAT CARDS ─── */
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card {
+  background: white;
+  border: 1px solid var(--paper3);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+}
+.stat-label { font-size: 12px; color: var(--ink3); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; }
+.stat-value { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1; }
+.stat-sub { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+.stat-up { color: var(--green); }
+.stat-down { color: var(--accent); }
+
+/* ─── BADGES ─── */
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 99px;
+  gap: 4px;
+}
+.badge-green { background: var(--green-pale); color: var(--green); }
+.badge-orange { background: var(--accent-pale); color: var(--accent); }
+.badge-blue { background: var(--blue-pale); color: var(--blue); }
+.badge-gold { background: var(--gold-pale); color: var(--gold); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 500;
+  padding: 9px 18px; border-radius: 8px;
+  border: 1px solid;
+  cursor: pointer; transition: all .15s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--ink); color: white;
+  border-color: var(--ink);
+}
+.btn-primary:hover { background: var(--ink2); }
+.btn-accent {
+  background: var(--accent); color: white;
+  border-color: var(--accent);
+}
+.btn-accent:hover { background: var(--accent2); }
+.btn-ghost {
+  background: transparent; color: var(--ink);
+  border-color: var(--paper3);
+}
+.btn-ghost:hover { background: var(--paper2); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+/* ─── INPUTS ─── */
+.input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.input-label { font-size: 12px; font-weight: 500; color: var(--ink2); }
+.input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--paper3);
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+.input:focus { border-color: var(--accent); }
+select.input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%235a5a5a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+textarea.input { resize: vertical; min-height: 80px; }
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.section-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+
+/* ─── DIVIDER ─── */
+.divider { border: none; border-top: 1px solid var(--paper3); margin: 1.2rem 0; }
+
+/* ─── TABLE ─── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 11px; font-weight: 600; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--paper3);
+}
+.data-table td {
+  font-size: 13px; color: var(--ink);
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--paper2);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--paper); }
+
+/* ─── CHAT ─── */
+.chat-container {
+  display: flex; flex-direction: column;
+  height: 460px;
+  border: 1px solid var(--paper3);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: white;
+}
+.chat-messages {
+  flex: 1; overflow-y: auto;
+  padding: 1.2rem;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--paper3); border-radius: 4px; }
+.msg {
+  display: flex; gap: 10px;
+  animation: msgIn .25s ease-out;
+}
+@keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  flex-shrink: 0;
+}
+.msg-avatar.bot { background: var(--ink); color: white; font-family: var(--font-display); font-size: 11px; }
+.msg-avatar.user-av { background: var(--accent); color: white; font-size: 11px; }
+.msg-bubble {
+  max-width: 70%; padding: 10px 14px;
+  border-radius: 16px; font-size: 14px; line-height: 1.5;
+}
+.msg.bot .msg-bubble { background: var(--paper); color: var(--ink); border-bottom-left-radius: 4px; }
+.msg.user .msg-bubble { background: var(--ink); color: white; border-bottom-right-radius: 4px; }
+.chat-input-row {
+  display: flex; gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--paper3);
+  background: var(--paper);
+}
+.chat-input {
+  flex: 1; font-family: var(--font-body); font-size: 13px;
+  padding: 9px 14px; border: 1px solid var(--paper3);
+  border-radius: 99px; background: white; outline: none;
+  transition: border-color .15s;
+}
+.chat-input:focus { border-color: var(--accent); }
+.chat-send {
+  background: var(--ink); color: white;
+  border: none; border-radius: 99px;
+  width: 36px; height: 36px;
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s; flex-shrink: 0;
+}
+.chat-send:hover { background: var(--accent); }
+.typing-dots span {
+  display: inline-block; width: 6px; height: 6px;
+  background: var(--ink3); border-radius: 50%;
+  margin: 0 2px;
+  animation: bounce 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+/* ─── CHAT CONFIG ─── */
+.config-row { display: flex; gap: 8px; align-items: flex-start; }
+.config-section { background: var(--paper); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.config-section-title { font-size: 12px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+
+/* ─── LEAD ITEMS ─── */
+.lead-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--paper2);
+}
+.lead-item:last-child { border-bottom: none; }
+.lead-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: white; flex-shrink: 0;
+}
+.lead-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.lead-meta { font-size: 12px; color: var(--ink3); }
+.lead-actions { display: flex; gap: 6px; }
+
+/* ─── CRM TABLE ─── */
+.priority-bar {
+  display: flex; align-items: center; gap: 6px;
+}
+.priority-fill {
+  height: 4px; border-radius: 2px; background: var(--paper3); flex: 1; overflow: hidden;
+}
+.priority-fill-inner { height: 100%; border-radius: 2px; }
+
+/* ─── CONTENT GENERATOR ─── */
+.gen-output {
+  background: var(--paper);
+  border: 1px solid var(--paper3);
+  border-radius: 10px;
+  padding: 1.2rem;
+  font-size: 14px; line-height: 1.7;
+  color: var(--ink);
+  min-height: 120px;
+  position: relative;
+  white-space: pre-wrap;
+}
+.gen-output.loading::after {
+  content: '';
+  display: inline-block; width: 8px; height: 16px;
+  background: var(--accent); border-radius: 2px;
+  animation: cursor-blink 1s infinite;
+  vertical-align: text-bottom;
+}
+@keyframes cursor-blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: white; border: 1px solid var(--paper3);
+  border-radius: 6px; padding: 4px 10px;
+  font-size: 11px; font-weight: 500; cursor: pointer;
+  color: var(--ink3); transition: all .15s;
+}
+.copy-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+/* ─── FOOTER ─── */
+.footer-brand {
+  text-align: center; padding: 2rem;
+  font-size: 12px; color: var(--ink3);
+  border-top: 1px solid var(--paper3);
+  margin-top: 2rem;
+}
+.footer-brand strong { color: var(--ink); font-family: var(--font-display); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(13,13,13,0.55);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: var(--radius-lg);
+  padding: 2rem; width: 480px; max-width: 92vw;
+  max-height: 80vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn .2s ease-out;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--ink3); line-height: 1; }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+  background: var(--ink); color: white;
+  padding: 12px 20px; border-radius: 10px;
+  font-size: 13px; font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  display: none;
+  animation: toastIn .25s ease-out;
+}
+@keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── PROGRESS STEPS ─── */
+.steps { display: flex; gap: 0; margin-bottom: 2rem; }
+.step { flex: 1; position: relative; }
+.step:not(:last-child)::after {
+  content: ''; position: absolute;
+  top: 14px; left: calc(50% + 14px);
+  width: calc(100% - 28px); height: 2px;
+  background: var(--paper3);
+}
+.step.done:not(:last-child)::after { background: var(--accent); }
+.step-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin: 0 auto 6px;
+  border: 2px solid var(--paper3);
+  background: white; color: var(--ink3);
+  position: relative; z-index: 1;
+}
+.step.done .step-circle { border-color: var(--accent); background: var(--accent); color: white; }
+.step.active .step-circle { border-color: var(--accent); color: var(--accent); }
+.step-label { text-align: center; font-size: 11px; color: var(--ink3); font-weight: 500; }
+.step.active .step-label, .step.done .step-label { color: var(--ink); }
+
+/* ─── NOTIFICATION DOT ─── */
+.notif-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); display: inline-block; flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:.7} }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="brand">BQinz<span>AgencIA</span></div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite"></div>
+    <span style="font-size:12px;color:#888">Sistema activo</span>
+    <span class="client-badge">Copybras</span>
+  </div>
+</nav>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showPanel('dashboard')">
+    <span class="tab-icon">📊</span> Dashboard
+  </button>
+  <button class="tab-btn" onclick="showPanel('chatbot')">
+    <span class="tab-icon">🤖</span> Chatbot IA
+  </button>
+  <button class="tab-btn" onclick="showPanel('crm')">
+    <span class="tab-icon">👥</span> CRM
+  </button>
+  <button class="tab-btn" onclick="showPanel('content')">
+    <span class="tab-icon">✍️</span> Contenido IA
+  </button>
+  <button class="tab-btn" onclick="showPanel('install')">
+    <span class="tab-icon">⚙️</span> Instalación
+  </button>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PANEL 1: DASHBOARD
+══════════════════════════════════════════ -->
+<div class="panel active" id="panel-dashboard">
+
+  <div class="section-header" style="margin-top:.5rem">
+    <div>
+      <div class="section-title">Resumen operativo</div>
+      <div class="section-sub">Copybras · Última actualización: hoy, 14:32</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="refreshStats()">↻ Actualizar</button>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Conversaciones hoy</div>
+      <div class="stat-value" id="s1">24</div>
+      <div class="stat-sub stat-up">↑ 18% vs ayer</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Leads captados</div>
+      <div class="stat-value" id="s2">7</div>
+      <div class="stat-sub stat-up">↑ 3 nuevos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Clientes en CRM</div>
+      <div class="stat-value" id="s3">38</div>
+      <div class="stat-sub">+2 esta semana</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Emails enviados</div>
+      <div class="stat-value" id="s4">12</div>
+      <div class="stat-sub stat-up">82% tasa apertura</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Contenido generado</div>
+      <div class="stat-value" id="s5">31</div>
+      <div class="stat-sub">posts este mes</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="gap:1.2rem">
+
+    <!-- Últimos leads -->
+    <div class="card">
+      <div class="card-title"><div class="dot"></div> Últimos leads captados</div>
+      <div id="leads-list">
+        <!-- Populated by JS -->
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="showPanel('crm')">Ver todos en CRM →</button>
+    </div>
+
+    <!-- Actividad reciente -->
+    <div class="card">
+      <div class="card-title"><div class="dot" style="background:var(--green)"></div> Actividad reciente</div>
+      <div id="activity-log" style="display:flex;flex-direction:column;gap:10px">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Quick actions -->
+  <div class="card" style="margin-top:1.2rem">
+    <div class="card-title"><div class="dot" style="background:var(--blue)"></div> Acciones rápidas</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <button class="btn btn-primary" onclick="showPanel('chatbot')">🤖 Ir al chatbot</button>
+      <button class="btn btn-ghost" onclick="showPanel('crm')">👥 Añadir cliente</button>
+      <button class="btn btn-ghost" onclick="showPanel('content')">✍️ Generar contenido</button>
+      <button class="btn btn-accent" onclick="showModal('modal-email')">📧 Enviar campaña</button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PANEL 2: CHATBOT IA
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-chatbot">
+
+  <div class="section-header" style="margin-top:.5rem">
+    <div>
+      <div class="section-title">Chatbot IA — Copybras</div>
+      <div class="section-sub">Asistente de ventas inteligente · Entrenado con el catálogo de Copybras</div>
+    </div>
+    <span class="badge badge-green">● En línea</span>
+  </div>
+
+  <div class="grid-2" style="gap:1.2rem;align-items:start">
+
+    <!-- Chat preview -->
+    <div class="card">
+      <div class="card-title"><div class="dot"></div> Vista previa del chat</div>
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-msgs">
+          <div class="msg bot">
+            <div class="msg-avatar bot">IA</div>
+            <div class="msg-bubble">¡Hola! Soy el asistente de Copybras. ¿En qué puedo ayudarte hoy? Puedo informarte sobre material de oficina, precios, disponibilidad de stock o tramitar tu pedido. 📎</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-in" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="chat-send" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:11px;color:var(--ink3);margin-bottom:4px;width:100%">Preguntas frecuentes:</span>
+        <button class="btn btn-ghost btn-sm" onclick="quickQ('¿Tenéis papel A4 en stock?')">¿Papel A4?</button>
+        <button class="btn btn-ghost btn-sm" onclick="quickQ('¿Cuál es el precio de los tóneres?')">Tóneres</button>
+        <button class="btn btn-ghost btn-sm" onclick="quickQ('¿Hacéis envíos a toda España?')">Envíos</button>
+        <button class="btn btn-ghost btn-sm" onclick="quickQ('Quiero hacer un pedido grande de material de oficina')">Pedido empresa</button>
+      </div>
+    </div>
+
+    <!-- Config -->
+    <div>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-title"><div class="dot" style="background:var(--blue)"></div> Configuración del asistente</div>
+
+        <div class="config-section">
+          <div class="config-section-title">Personalidad</div>
+          <div class="input-group">
+            <label class="input-label">Nombre del asistente</label>
+            <input class="input" value="Asistente Copybras" id="bot-name">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Tono de respuesta</label>
+            <select class="input" id="bot-tone">
+              <option>Profesional y amigable</option>
+              <option>Formal</option>
+              <option>Cercano e informal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-title">Conocimiento del catálogo</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+            <span class="badge badge-green">✓ Material oficina</span>
+            <span class="badge badge-green">✓ Tecnología</span>
+            <span class="badge badge-green">✓ Escolar</span>
+            <span class="badge badge-green">✓ Precios</span>
+            <span class="badge badge-green">✓ Envíos</span>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-title">Captura de leads</div>
+          <div class="input-group">
+            <label class="input-label">Disparador de captura</label>
+            <select class="input">
+              <option>Al preguntar por pedidos grandes</option>
+              <option>Siempre al inicio</option>
+              <option>Cuando el usuario lo solicite</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Enviar notificación a</label>
+            <input class="input" value="info@copybras.es" placeholder="email@copybras.es">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%" onclick="saveConfig()">Guardar configuración</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="dot" style="background:var(--green)"></div> Código de instalación</div>
+        <div style="background:var(--ink);border-radius:8px;padding:1rem;font-family:monospace;font-size:11px;color:#a8f0c8;overflow-x:auto;line-height:1.8">
+          &lt;!-- Pegar antes de &lt;/body&gt; en copybras.es --&gt;<br>
+          &lt;script src="https://bqinzagencia.com<br>
+          &nbsp;&nbsp;/chatbot/copybras.min.js"&gt;&lt;/script&gt;<br>
+          &lt;script&gt;<br>
+          &nbsp;&nbsp;BQChat.init({<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;client: 'copybras',<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;theme: 'light',<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;position: 'bottom-right'<br>
+          &nbsp;&nbsp;});<br>
+          &lt;/script&gt;
+        </div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="copyCode()">📋 Copiar código</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PANEL 3: CRM
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-crm">
+
+  <div class="section-header" style="margin-top:.5rem">
+    <div>
+      <div class="section-title">CRM Inteligente</div>
+      <div class="section-sub">Gestión de clientes con seguimiento automatizado</div>
+    </div>
+    <button class="btn btn-accent" onclick="showModal('modal-cliente')">+ Añadir cliente</button>
+  </div>
+
+  <!-- Pipeline visual -->
+  <div class="grid-3" style="margin-bottom:1.5rem;gap:1rem">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div class="card-title" style="font-size:13px"><div class="dot" style="background:var(--blue)"></div> Leads nuevos <span style="margin-left:auto;font-size:12px;background:var(--blue-pale);color:var(--blue);padding:2px 8px;border-radius:99px">7</span></div>
+      <div style="font-size:12px;color:var(--ink3)">Pendientes de contacto</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--gold)">
+      <div class="card-title" style="font-size:13px"><div class="dot" style="background:var(--gold)"></div> En negociación <span style="margin-left:auto;font-size:12px;background:var(--gold-pale);color:var(--gold);padding:2px 8px;border-radius:99px">12</span></div>
+      <div style="font-size:12px;color:var(--ink3)">Presupuesto enviado</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-title" style="font-size:13px"><div class="dot" style="background:var(--green)"></div> Clientes activos <span style="margin-left:auto;font-size:12px;background:var(--green-pale);color:var(--green);padding:2px 8px;border-radius:99px">19</span></div>
+      <div style="font-size:12px;color:var(--ink3)">Compra recurrente</div>
+    </div>
+  </div>
+
+  <!-- Search & filters -->
+  <div style="display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
+    <input class="input" style="flex:1;min-width:200px" placeholder="🔍  Buscar cliente, empresa..." oninput="filterTable(this.value)">
+    <select class="input" style="width:160px" onchange="filterByStatus(this.value)">
+      <option value="">Todos los estados</option>
+      <option value="activo">Activos</option>
+      <option value="nuevo">Nuevos leads</option>
+      <option value="inactivo">Inactivos</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="exportCRM()">⬇ Exportar CSV</button>
+  </div>
+
+  <!-- CRM Table -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="overflow-x:auto">
+      <table class="data-table" id="crm-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Empresa</th>
+            <th>Última compra</th>
+            <th>Valor total</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="crm-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Auto-follow up section -->
+  <div class="card" style="margin-top:1.2rem">
+    <div class="card-title"><div class="dot" style="background:var(--accent)"></div> Seguimiento automático con IA</div>
+    <div class="grid-2" style="gap:1rem">
+      <div class="config-section" style="margin-bottom:0">
+        <div class="config-section-title">Regla 1 — Reactivación</div>
+        <div style="font-size:13px;color:var(--ink2)">Si un cliente lleva <strong>+30 días sin comprar</strong> → email personalizado con oferta de reposición de tóneres/papel.</div>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+          <span class="badge badge-green">● Activa</span>
+          <span style="font-size:12px;color:var(--ink3)">12 emails enviados este mes</span>
+        </div>
+      </div>
+      <div class="config-section" style="margin-bottom:0">
+        <div class="config-section-title">Regla 2 — Bienvenida</div>
+        <div style="font-size:13px;color:var(--ink2)">Nuevo lead captado por el chatbot → email de bienvenida automático en <strong>menos de 5 minutos</strong>.</div>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+          <span class="badge badge-green">● Activa</span>
+          <span style="font-size:12px;color:var(--ink3)">7 enviados hoy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PANEL 4: CONTENIDO IA
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-content">
+
+  <div class="section-header" style="margin-top:.5rem">
+    <div>
+      <div class="section-title">Generador de contenido IA</div>
+      <div class="section-sub">Crea descripciones, posts y emails optimizados para Copybras</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="gap:1.2rem;align-items:start">
+
+    <!-- Generator form -->
+    <div class="card">
+      <div class="card-title"><div class="dot"></div> Configurar generación</div>
+
+      <div class="input-group">
+        <label class="input-label">Tipo de contenido</label>
+        <select class="input" id="content-type" onchange="updatePromptHint()">
+          <option value="desc">Descripción de producto</option>
+          <option value="post">Post redes sociales</option>
+          <option value="email">Email de campaña</option>
+          <option value="seo">Texto SEO categoría</option>
+          <option value="whatsapp">Mensaje WhatsApp</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Producto / Tema</label>
+        <input class="input" id="content-product" placeholder="Ej: Papel Navigator A4 80gr, paquete 500 hojas">
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Tono</label>
+        <select class="input" id="content-tone">
+          <option>Profesional</option>
+          <option>Cercano y amigable</option>
+          <option>Urgencia / Oferta</option>
+          <option>Corporativo</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Información adicional</label>
+        <textarea class="input" id="content-extra" placeholder="Ej: precio 4,55€, descuento 10%, válido hasta fin de mes..."></textarea>
+      </div>
+
+      <div id="prompt-hint" style="background:var(--accent-pale);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--accent);margin-bottom:14px;line-height:1.5">
+        💡 <strong>Descripción de producto:</strong> Incluye características técnicas, beneficios y palabras clave SEO relevantes para la categoría.
+      </div>
+
+      <button class="btn btn-accent" style="width:100%" id="gen-btn" onclick="generateContent()">
+        ✨ Generar con IA
+      </button>
+    </div>
+
+    <!-- Output -->
+    <div>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-title"><div class="dot" style="background:var(--green)"></div> Contenido generado</div>
+        <div class="gen-output" id="gen-output" style="position:relative">
+          <span style="color:var(--ink3);font-style:italic">El contenido aparecerá aquí...</span>
+          <button class="copy-btn" onclick="copyOutput()" style="display:none" id="copy-btn">📋 Copiar</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap" id="output-actions" style="display:none">
+          <button class="btn btn-primary btn-sm" id="use-btn" style="display:none" onclick="useContent()">✓ Usar este</button>
+          <button class="btn btn-ghost btn-sm" id="regen-btn" style="display:none" onclick="generateContent()">↻ Regenerar</button>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="card">
+        <div class="card-title"><div class="dot" style="background:var(--blue)"></div> Historial reciente</div>
+        <div id="content-history" style="display:flex;flex-direction:column;gap:8px">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bulk generation -->
+  <div class="card" style="margin-top:1.2rem">
+    <div class="card-title"><div class="dot" style="background:var(--gold)"></div> Generación masiva de descripciones</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:1rem">Copybras tiene más de 900 productos sin descripción optimizada. Genera todas en lote para mejorar el SEO.</div>
+    <div class="grid-3">
+      <div style="text-align:center;padding:1rem;background:var(--paper);border-radius:10px">
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--accent)">935+</div>
+        <div style="font-size:12px;color:var(--ink3)">productos en catálogo</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--paper);border-radius:10px">
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--gold)">~2h</div>
+        <div style="font-size:12px;color:var(--ink3)">tiempo estimado</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--paper);border-radius:10px">
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--green)">+40%</div>
+        <div style="font-size:12px;color:var(--ink3)">mejora SEO estimada</div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="startBulk()">🚀 Iniciar generación masiva</button>
+      <button class="btn btn-ghost" onclick="showModal('modal-bulk')">Ver detalles del proceso</button>
+    </div>
+    <div id="bulk-progress" style="display:none;margin-top:1rem">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px">
+        <span>Generando descripciones...</span>
+        <span id="bulk-pct">0%</span>
+      </div>
+      <div style="background:var(--paper3);border-radius:99px;height:8px;overflow:hidden">
+        <div id="bulk-bar" style="height:100%;background:var(--accent);border-radius:99px;transition:width .3s;width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PANEL 5: INSTALACIÓN
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-install">
+
+  <div class="section-header" style="margin-top:.5rem">
+    <div>
+      <div class="section-title">Guía de instalación</div>
+      <div class="section-sub">Pasos para activar el sistema en copybras.es</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step done" id="step1">
+      <div class="step-circle">✓</div>
+      <div class="step-label">Chatbot</div>
+    </div>
+    <div class="step done" id="step2">
+      <div class="step-circle">✓</div>
+      <div class="step-label">CRM</div>
+    </div>
+    <div class="step active" id="step3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Contenido</div>
+    </div>
+    <div class="step" id="step4">
+      <div class="step-circle">4</div>
+      <div class="step-label">Automatización</div>
+    </div>
+    <div class="step" id="step5">
+      <div class="step-circle">5</div>
+      <div class="step-label">Entrega</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:1rem">
+
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="background:var(--green-pale);color:var(--green);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">✓</div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">Paso 1 — Chatbot instalado</div>
+          <div style="font-size:13px;color:var(--ink3)">El script del chatbot está listo para pegar en el &lt;/body&gt; de copybras.es. El dueño debe acceder al panel de PrestaShop → Módulos → HTML personalizado y pegar el código.</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="showPanel('chatbot')">Ver código →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="background:var(--green-pale);color:var(--green);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">✓</div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">Paso 2 — CRM configurado</div>
+          <div style="font-size:13px;color:var(--ink3)">Base de datos de clientes activa con 38 contactos importados. Automatizaciones de seguimiento configuradas en Make.com con disparadores activos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--accent)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="background:var(--accent-pale);color:var(--accent);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">3</div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">Paso 3 — Contenido IA (en progreso)</div>
+          <div style="font-size:13px;color:var(--ink3);margin-bottom:10px">Generación de descripciones optimizadas para los 935 productos del catálogo. Estimado: 2 horas de procesamiento.</div>
+          <div style="background:var(--paper3);border-radius:99px;height:6px;overflow:hidden;margin-bottom:6px">
+            <div style="height:100%;background:var(--accent);width:34%;border-radius:99px;transition:width .5s"></div>
+          </div>
+          <div style="font-size:12px;color:var(--ink3)">317 / 935 productos completados</div>
+          <button class="btn btn-accent btn-sm" style="margin-top:8px" onclick="showPanel('content')">Continuar →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--paper3);opacity:.6">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="background:var(--paper2);color:var(--ink3);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">4</div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">Paso 4 — Automatización de marketing</div>
+          <div style="font-size:13px;color:var(--ink3)">Configurar flujos de Make.com para publicación automática en Instagram y Facebook con las ofertas semanales. Conectar Buffer + Claude API.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--paper3);opacity:.6">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="background:var(--paper2);color:var(--ink3);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">5</div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">Paso 5 — Entrega y formación</div>
+          <div style="font-size:13px;color:var(--ink3)">Sesión de 1h con el dueño de Copybras para explicar el sistema. Manual de uso. Soporte mensual incluido en el retainer.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Invoice preview -->
+  <div class="card" style="margin-top:1.5rem;background:var(--ink);color:white;border-color:var(--ink2)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div style="font-family:var(--font-display);font-size:16px;font-weight:700">Propuesta económica</div>
+      <span style="font-size:11px;color:#888;background:#222;padding:3px 10px;border-radius:99px">BORRADOR</span>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <tr style="border-bottom:1px solid #333">
+        <td style="padding:8px 0;color:#aaa">Chatbot IA (setup)</td>
+        <td style="text-align:right;padding:8px 0">400 €</td>
+      </tr>
+      <tr style="border-bottom:1px solid #333">
+        <td style="padding:8px 0;color:#aaa">CRM + automatizaciones (setup)</td>
+        <td style="text-align:right;padding:8px 0">350 €</td>
+      </tr>
+      <tr style="border-bottom:1px solid #333">
+        <td style="padding:8px 0;color:#aaa">Contenido IA 935 productos (proyecto)</td>
+        <td style="text-align:right;padding:8px 0">500 €</td>
+      </tr>
+      <tr style="border-bottom:1px solid #444">
+        <td style="padding:8px 0;color:#aaa">Mantenimiento mensual</td>
+        <td style="text-align:right;padding:8px 0">350 €/mes</td>
+      </tr>
+      <tr>
+        <td style="padding:12px 0;font-family:var(--font-display);font-weight:700;font-size:15px">Total setup</td>
+        <td style="text-align:right;padding:12px 0;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--accent2)">1.250 €</td>
+      </tr>
+    </table>
+    <div style="display:flex;gap:10px;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn" style="background:var(--accent);color:white;border-color:var(--accent)" onclick="showToast('Propuesta enviada a info@copybras.es ✓')">📧 Enviar propuesta</button>
+      <button class="btn" style="background:transparent;color:#aaa;border-color:#444" onclick="showToast('PDF descargado ✓')">⬇ Descargar PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer-brand">
+  Sistema desarrollado por <strong>BQinzAgencIA</strong> · Cliente: Copybras · 2024
+</div>
+
+<!-- ══════ MODALS ══════ -->
+<div class="modal-overlay" id="modal-email">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="card-title" style="margin:0"><div class="dot"></div> Enviar campaña de email</div>
+      <button class="modal-close" onclick="closeModal('modal-email')">×</button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Segmento</label>
+      <select class="input">
+        <option>Todos los clientes (38)</option>
+        <option>Inactivos +30 días (12)</option>
+        <option>Leads nuevos (7)</option>
+        <option>Empresas grandes (5)</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Asunto del email</label>
+      <input class="input" placeholder="Ej: Oferta especial en papel A4 esta semana">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Contenido (o genera con IA)</label>
+      <textarea class="input" style="min-height:120px" placeholder="Escribe el contenido o usa el generador IA..."></textarea>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-accent" style="flex:1" onclick="closeModal('modal-email');showToast('Campaña programada para las 10:00 ✓')">Enviar campaña</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-email')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="card-title" style="margin:0"><div class="dot"></div> Añadir nuevo cliente</div>
+      <button class="modal-close" onclick="closeModal('modal-cliente')">×</button>
+    </div>
+    <div class="grid-2" style="gap:10px">
+      <div class="input-group">
+        <label class="input-label">Nombre</label>
+        <input class="input" placeholder="Juan" id="new-name">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Apellidos</label>
+        <input class="input" placeholder="García" id="new-apellido">
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Empresa</label>
+      <input class="input" placeholder="Empresa S.L." id="new-empresa">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Email</label>
+      <input class="input" type="email" placeholder="email@empresa.com" id="new-email">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Teléfono</label>
+      <input class="input" placeholder="6XX XXX XXX" id="new-tel">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Estado</label>
+      <select class="input" id="new-status">
+        <option value="nuevo">Nuevo lead</option>
+        <option value="activo">Cliente activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-accent" style="flex:1" onclick="addCliente()">Guardar cliente</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-cliente')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-bulk">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="card-title" style="margin:0"><div class="dot"></div> Generación masiva de contenido</div>
+      <button class="modal-close" onclick="closeModal('modal-bulk')">×</button>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:1rem">
+      El sistema recorrerá todas las categorías del catálogo de Copybras y generará descripciones optimizadas para SEO usando la API de Claude.<br><br>
+      <strong>El proceso:</strong><br>
+      1. Extrae nombre y referencia de cada producto<br>
+      2. Genera descripción de 80-120 palabras con keywords<br>
+      3. Exporta CSV listo para importar en PrestaShop<br><br>
+      <strong>Coste estimado en API:</strong> ~8-12€ para 935 productos
+    </div>
+    <div style="background:var(--gold-pale);border-radius:8px;padding:12px;font-size:12px;color:var(--gold);margin-bottom:1rem">
+      ⚠️ Necesitas una API key de Anthropic (Claude). Se configura en Ajustes.
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-accent" style="flex:1" onclick="closeModal('modal-bulk');startBulk()">Comenzar proceso</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-bulk')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───
+const clientes = [
+  { id:1, nombre:'María López', empresa:'Papelería Central', email:'maria@central.com', ultima:'hace 2 días', valor:'1.240€', status:'activo', prioridad:90 },
+  { id:2, nombre:'Carlos Ruiz', empresa:'Academia Norte', email:'c.ruiz@academia.es', ultima:'hace 8 días', valor:'890€', status:'activo', prioridad:75 },
+  { id:3, nombre:'Ana Martínez', empresa:'Gestoría AM', email:'ana@gestoria.com', ultima:'hace 35 días', valor:'560€', status:'inactivo', prioridad:40 },
+  { id:4, nombre:'Pedro Sánchez', empresa:'Clínica SP', email:'p.sanchez@clinica.es', ultima:'hace 1 día', valor:'2.100€', status:'activo', prioridad:95 },
+  { id:5, nombre:'Laura García', empresa:'—', email:'lgarcia@gmail.com', ultima:'nuevo', valor:'0€', status:'nuevo', prioridad:60 },
+  { id:6, nombre:'Javier Torres', empresa:'Taller JT', email:'j.torres@taller.es', ultima:'hace 45 días', valor:'340€', status:'inactivo', prioridad:20 },
+  { id:7, nombre:'Isabel Moreno', empresa:'Colegio Nuevo', email:'i.moreno@colegio.es', ultima:'hace 3 días', valor:'3.400€', status:'activo', prioridad:88 },
+];
+
+const leadsRecientes = [
+  { iniciales:'LG', color:'#c8451a', nombre:'Laura García', email:'lgarcia@gmail.com', fuente:'Chatbot', hace:'hace 2h' },
+  { iniciales:'MM', color:'#1a6b3c', nombre:'Manuel Muñoz', email:'m.munoz@empresa.es', fuente:'Web', hace:'hace 5h' },
+  { iniciales:'CR', color:'#1a3d6b', nombre:'Carmen Ramos', email:'carmen@ramos.com', fuente:'Chatbot', hace:'ayer' },
+];
+
+const historialContenido = [
+  { tipo:'Descripción', texto:'Papel Navigator A4 80gr — descripción SEO', icon:'📄' },
+  { tipo:'Post IG', texto:'Oferta especial: material escolar vuelta al cole', icon:'📱' },
+  { tipo:'Email', texto:'Campaña reactivación clientes inactivos agosto', icon:'📧' },
+];
+
+const actividadLog = [
+  { icon:'🤖', texto:'Chatbot respondió 8 consultas', tiempo:'hace 12 min', color:'var(--blue)' },
+  { icon:'📧', texto:'Email enviado a Ana Martínez (reactivación)', tiempo:'hace 1h', color:'var(--accent)' },
+  { icon:'👤', texto:'Nuevo lead: Laura García via chatbot', tiempo:'hace 2h', color:'var(--green)' },
+  { icon:'✍️', texto:'32 descripciones de producto generadas', tiempo:'hace 3h', color:'var(--gold)' },
+  { icon:'📊', texto:'Reporte semanal generado', tiempo:'hace 1 día', color:'var(--ink3)' },
+];
+
+// ─── CHAT BOT RESPONSES ───
+const botResponses = {
+  default: [
+    "Entendido. Para ayudarte mejor, ¿me puedes decir qué cantidad aproximada necesitas? Así puedo darte el precio exacto con posible descuento por volumen.",
+    "¡Claro! Tenemos ese producto disponible. El precio unitario es muy competitivo y si compras más de 10 unidades el precio baja un 8%. ¿Te interesa?",
+    "Perfecto, te puedo informar sobre eso. Copybras tiene una de las mejores relaciones calidad-precio del mercado. ¿Quieres que te pase una oferta personalizada?",
+    "Para pedidos de empresa tenemos condiciones especiales. ¿Me dices tu nombre y email para que nuestro equipo os prepare un presupuesto sin compromiso?",
+  ],
+  papel: "¡Sí! Tenemos papel A4 Navigator 80gr en stock. El paquete de 500 hojas está a 4,55€. Si necesitas una caja de 5 paquetes te aplicamos un descuento especial. ¿Cuánto necesitas aproximadamente? 📄",
+  toneres: "Trabajamos con tóneres originales y compatibles para todas las marcas principales: HP, Canon, Epson, Brother, Samsung... Los compatibles tienen un ahorro del 40-60% respecto al original con la misma calidad. ¿Para qué impresora lo necesitas?",
+  envios: "¡Claro que hacemos envíos a toda España! El envío es GRATIS para pedidos superiores a 65€. Tiempo de entrega: 24-48h laborables para Madrid y 48-72h para el resto. ¿Tienes algún pedido en mente? 🚚",
+  pedido: "Genial, para pedidos de empresa tenemos condiciones especiales y cuenta de crédito. Para darte una propuesta personalizada, ¿me puedes dejar tu nombre, email y empresa? Nuestro equipo te contactará en menos de 2 horas. 🏢",
+};
+
+// ─── PANEL NAVIGATION ───
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const tabs = ['dashboard','chatbot','crm','content','install'];
+  const idx = tabs.indexOf(name);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+
+// ─── INIT ───
+function init() {
+  renderLeads();
+  renderActivity();
+  renderCRM();
+  renderHistory();
+}
+
+function renderLeads() {
+  const c = ['#c8451a','#1a6b3c','#1a3d6b'];
+  document.getElementById('leads-list').innerHTML = leadsRecientes.map((l,i) => `
+    <div class="lead-item">
+      <div class="lead-avatar" style="background:${l.color}">${l.iniciales}</div>
+      <div class="lead-info">
+        <div class="lead-name">${l.nombre}</div>
+        <div class="lead-meta">${l.email} · ${l.fuente} · ${l.hace}</div>
+      </div>
+      <div class="lead-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Email enviado a ${l.nombre} ✓')">📧</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('WhatsApp abierto ✓')">💬</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderActivity() {
+  document.getElementById('activity-log').innerHTML = actividadLog.map(a => `
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="font-size:16px;flex-shrink:0;margin-top:1px">${a.icon}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;color:var(--ink)">${a.texto}</div>
+        <div style="font-size:11px;color:var(--ink3)">${a.tiempo}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCRM(data) {
+  const items = data || clientes;
+  const statusMap = { activo: 'badge-green', nuevo: 'badge-blue', inactivo: 'badge-orange' };
+  const statusLabel = { activo: '● Activo', nuevo: '◆ Nuevo', inactivo: '○ Inactivo' };
+  document.getElementById('crm-body').innerHTML = items.map(c => `
+    <tr>
+      <td>
+        <div style="font-weight:500">${c.nombre}</div>
+        <div style="font-size:11px;color:var(--ink3)">${c.email}</div>
+      </td>
+      <td>${c.empresa}</td>
+      <td style="color:var(--ink3)">${c.ultima}</td>
+      <td style="font-weight:500">${c.valor}</td>
+      <td><span class="badge ${statusMap[c.status]}">${statusLabel[c.status]}</span></td>
+      <td>
+        <div class="priority-bar">
+          <div class="priority-fill"><div class="priority-fill-inner" style="width:${c.prioridad}%;background:${c.prioridad>70?'var(--green)':c.prioridad>40?'var(--gold)':'var(--accent)'}"></div></div>
+          <span style="font-size:11px;color:var(--ink3);min-width:28px">${c.prioridad}</span>
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Email enviado a ${c.nombre} ✓')">📧</button>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Ficha de ${c.nombre} abierta')">👁</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderHistory() {
+  document.getElementById('content-history').innerHTML = historialContenido.map(h => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--paper);border-radius:8px">
+      <span style="font-size:16px">${h.icon}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;color:var(--ink3)">${h.tipo}</div>
+        <div style="font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${h.texto}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Contenido copiado ✓')">📋</button>
+    </div>
+  `).join('');
+}
+
+// ─── CHAT ───
+function sendMsg() {
+  const inp = document.getElementById('chat-in');
+  const text = inp.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
+  inp.value = '';
+  const typing = addTyping();
+  setTimeout(() => {
+    typing.remove();
+    addMsg(getBotReply(text), 'bot');
+  }, 900 + Math.random()*600);
+}
+
+function quickQ(q) {
+  document.getElementById('chat-in').value = q;
+  sendMsg();
+}
+
+function addMsg(text, who) {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = `msg ${who}`;
+  div.innerHTML = who === 'bot'
+    ? `<div class="msg-avatar bot">IA</div><div class="msg-bubble">${text}</div>`
+    : `<div class="msg-avatar user-av">TÚ</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function addTyping() {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `<div class="msg-avatar bot">IA</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function getBotReply(text) {
+  const t = text.toLowerCase();
+  if (t.includes('papel') || t.includes('a4')) return botResponses.papel;
+  if (t.includes('tóner') || t.includes('toner') || t.includes('cartucho')) return botResponses.toneres;
+  if (t.includes('envío') || t.includes('envio') || t.includes('españa') || t.includes('entrega')) return botResponses.envios;
+  if (t.includes('pedido') || t.includes('empresa') || t.includes('grande')) return botResponses.pedido;
+  return botResponses.default[Math.floor(Math.random()*botResponses.default.length)];
+}
+
+// ─── CRM ACTIONS ───
+function filterTable(q) {
+  const f = q.toLowerCase();
+  const filtered = clientes.filter(c =>
+    c.nombre.toLowerCase().includes(f) ||
+    c.empresa.toLowerCase().includes(f) ||
+    c.email.toLowerCase().includes(f)
+  );
+  renderCRM(filtered);
+}
+
+function filterByStatus(status) {
+  if (!status) { renderCRM(); return; }
+  renderCRM(clientes.filter(c => c.status === status));
+}
+
+function addCliente() {
+  const nombre = document.getElementById('new-name').value + ' ' + document.getElementById('new-apellido').value;
+  const empresa = document.getElementById('new-empresa').value || '—';
+  const email = document.getElementById('new-email').value;
+  const status = document.getElementById('new-status').value;
+  if (!nombre.trim() || !email) { showToast('Por favor rellena nombre y email'); return; }
+  clientes.unshift({ id: Date.now(), nombre: nombre.trim(), empresa, email, ultima: 'ahora', valor: '0€', status, prioridad: 50 });
+  renderCRM();
+  closeModal('modal-cliente');
+  showToast('Cliente añadido correctamente ✓');
+  document.getElementById('s3').textContent = clientes.length;
+}
+
+function exportCRM() {
+  const rows = [['Nombre','Empresa','Email','Última compra','Valor','Estado']];
+  clientes.forEach(c => rows.push([c.nombre, c.empresa, c.email, c.ultima, c.valor, c.status]));
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'copybras-crm.csv';
+  a.click();
+  showToast('CSV exportado ✓');
+}
+
+// ─── CONTENT GENERATOR ───
+const contentTemplates = {
+  desc: (p,t,e) => `${p}\n\nProducto de alta calidad ideal para entornos de oficina y uso profesional intensivo. Fabricado con materiales de primera selección que garantizan un rendimiento óptimo y durabilidad excepcional.\n\nCaracterísticas principales:\n• Calidad superior certificada\n• Compatible con los principales equipos del mercado\n• Entrega rápida en 24-48h en toda España\n• Mejor relación calidad-precio del sector\n\n${e ? 'Información adicional: '+e+'\n\n' : ''}Disponible en Copybras con los mejores precios garantizados. Material de oficina profesional al mejor precio de España.`,
+  post: (p,t,e) => `🎯 ¿Sabías que en Copybras tienes ${p} al mejor precio de Madrid?\n\n✅ Envío gratis desde 65€\n✅ Stock disponible\n✅ Entrega en 24h\n\n${e||'¡Haz tu pedido hoy y recíbelo mañana!'}\n\n📞 91 406 11 21 | copybras.es\n#material_oficina #copybras #oficina #papeleria #Madrid`,
+  email: (p,t,e) => `Asunto: Oferta especial en ${p} — Solo esta semana\n\nHola [Nombre],\n\nEsperamos que todo vaya bien. Queríamos avisarte de que tenemos ${p} con condiciones especiales esta semana.\n\n${e||'Aprovecha esta oportunidad antes de que se agote el stock.'}\n\nSi quieres hacer tu pedido o tienes alguna consulta, contáctanos:\n📞 91 406 11 21\n✉️ info@copybras.es\n\nUn saludo,\nEl equipo de Copybras`,
+  seo: (p,t,e) => `${p} — Material de Oficina y Escolar en Madrid\n\nCopybras es tu tienda de referencia para ${p.toLowerCase()} en Madrid y toda España. Ofrecemos la mayor variedad de productos con los mejores precios del mercado y entrega garantizada en 24-48 horas.\n\n¿Por qué elegir Copybras para tu material de oficina?\n\nContamos con más de 20 años de experiencia suministrando a empresas, colegios y particulares. Nuestro catálogo incluye más de 5.000 referencias con marcas líderes como HP, Canon, Esselte, Liderpapel y muchas más.\n\n${e||'Solicita tu catálogo gratuito o haz tu pedido online en copybras.es'}`,
+  whatsapp: (p,t,e) => `¡Hola! 👋 Soy el asistente de Copybras.\n\nVi que estás interesado en ${p}. ¡Tenemos muy buen precio y stock disponible ahora mismo!\n\n${e||'¿Te mandamos más información o prefieres que te llamemos?'}\n\n📦 Envío gratis +65€\n⚡ Entrega 24h Madrid\n\n¡Respóndenos cuando quieras! 😊`,
+};
+
+function updatePromptHint() {
+  const type = document.getElementById('content-type').value;
+  const hints = {
+    desc: '💡 <strong>Descripción de producto:</strong> Incluye características técnicas, beneficios y palabras clave SEO relevantes para la categoría.',
+    post: '💡 <strong>Post redes sociales:</strong> Contenido atractivo con emojis, hashtags y llamada a la acción. Optimizado para Instagram y Facebook.',
+    email: '💡 <strong>Email de campaña:</strong> Asunto, cuerpo y CTA. Personalizable por segmento de cliente.',
+    seo: '💡 <strong>Texto SEO:</strong> Contenido optimizado para posicionamiento en Google. Incluye palabras clave naturalmente.',
+    whatsapp: '💡 <strong>Mensaje WhatsApp:</strong> Texto corto, cercano y con emojis. Ideal para respuesta rápida de clientes.',
+  };
+  document.getElementById('prompt-hint').innerHTML = hints[type];
+}
+
+function generateContent() {
+  const type = document.getElementById('content-type').value;
+  const product = document.getElementById('content-product').value || 'Material de oficina Copybras';
+  const tone = document.getElementById('content-tone').value;
+  const extra = document.getElementById('content-extra').value;
+
+  const out = document.getElementById('gen-output');
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true; btn.textContent = '⌛ Generando...';
+  out.textContent = '';
+  out.classList.add('loading');
+  document.getElementById('copy-btn').style.display = 'none';
+  document.getElementById('use-btn').style.display = 'none';
+  document.getElementById('regen-btn').style.display = 'none';
+
+  const content = contentTemplates[type](product, tone, extra);
+  let i = 0;
+  const interval = setInterval(() => {
+    out.textContent += content[i];
+    i++;
+    if (i >= content.length) {
+      clearInterval(interval);
+      out.classList.remove('loading');
+      btn.disabled = false; btn.textContent = '✨ Generar con IA';
+      document.getElementById('copy-btn').style.display = 'block';
+      document.getElementById('use-btn').style.display = 'inline-flex';
+      document.getElementById('regen-btn').style.display = 'inline-flex';
+      // Add to history
+      const typeLabels = { desc:'Descripción', post:'Post IG', email:'Email', seo:'SEO', whatsapp:'WhatsApp' };
+      const icons = { desc:'📄', post:'📱', email:'📧', seo:'🔍', whatsapp:'💬' };
+      historialContenido.unshift({ tipo: typeLabels[type], texto: product, icon: icons[type] });
+      if (historialContenido.length > 5) historialContenido.pop();
+      renderHistory();
+    }
+  }, 18);
+}
+
+function copyOutput() {
+  const text = document.getElementById('gen-output').textContent;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  showToast('Contenido copiado al portapapeles ✓');
+}
+
+function useContent() {
+  showToast('Contenido marcado como aprobado y enviado a cola de publicación ✓');
+}
+
+// ─── BULK ───
+function startBulk() {
+  const prog = document.getElementById('bulk-progress');
+  prog.style.display = 'block';
+  let pct = 0;
+  const iv = setInterval(() => {
+    pct += Math.random() * 3;
+    if (pct >= 100) { pct = 100; clearInterval(iv); showToast('Generación masiva completada: 935 descripciones ✓'); }
+    document.getElementById('bulk-bar').style.width = Math.round(pct) + '%';
+    document.getElementById('bulk-pct').textContent = Math.round(pct) + '%';
+  }, 200);
+}
+
+// ─── HELPERS ───
+function showModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+function saveConfig() { showToast('Configuración guardada ✓'); }
+function copyCode() { showToast('Código de instalación copiado ✓'); }
+function refreshStats() {
+  ['s1','s2','s3','s4','s5'].forEach(id => {
+    const el = document.getElementById(id);
+    const v = parseInt(el.textContent);
+    el.textContent = v + Math.floor(Math.random()*2);
+  });
+  showToast('Datos actualizados ✓');
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
+});
+
+init();
+</script>
+</body>
+</html>
