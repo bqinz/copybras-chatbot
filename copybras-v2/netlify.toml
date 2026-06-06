@@ -1,4 +1,5 @@
 [build]
+  base = "copybras-v2"
   functions = "netlify/functions"
   publish = "."
 
