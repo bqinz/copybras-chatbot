@@ -103,9 +103,10 @@ async function send(){
     });
     const data=await res.json();
     typing.remove();
-    if(data.reply){
-      addMsg(data.reply,'bot');
-      hist.push({role:'assistant',content:data.reply});
+    const reply = data.content?.[0]?.text;
+    if(reply){
+      addMsg(reply,'bot');
+      hist.push({role:'assistant',content:reply});
       if(msgCount>=3&&!leadShown){leadShown=true;setTimeout(showLead,800);}
     }else{
       addMsg('Lo siento, hubo un problema. Llámanos al 91 406 11 21 📞','bot');
